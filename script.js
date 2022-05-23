@@ -56,3 +56,36 @@ const render = (element) => {
 // ul 요소에 agoraStatesDiscussions 배열의 모든 데이터를 화면에 렌더링합니다.
 const ul = document.querySelector("ul.discussions__container");
 render(ul);
+
+const form = document.querySelector("form.form");
+const author = form.querySelector("div.form__input--name > input");
+const title = form.querySelector("div.form__input--title > input");
+const textbox = form.querySelector("div.form__textbox > textarea");
+form.addEventListener('submit', (event) =>{
+  //form요소내에 어떤 요소로부터든 submit이벤트가 생기면
+  event.preventDefault();
+  //submit이벤트는 서버에 요청을 보내는 것을 시도합니다.
+  const obj = {
+    id: "unique id",
+    createdAt: new Date().toISOString(),
+    title: title.value,
+    url: "https://github.com/codestates-seb/agora-states-fe/discussions",
+    author: author.value,
+    answer:null,
+    bodyHTML:textbox.value,
+    avatarUrl: agoraStatesDiscussions[agoraStatesDiscussions.length - 1].avatarUrl
+  };
+  //배열안에도 넣어야 한다.
+  agoraStatesDiscussions.unshift(obj);
+  console.log(agoraStatesDiscussions.length);
+  //다 지워주고
+  while(ul.firstChild){
+    ul.removeChild(ul.firstChild);
+  }
+  //데이터값 리셋
+  author.value = '';
+  title.value = '';
+  textbox.value = '';
+
+  render(ul);
+});
